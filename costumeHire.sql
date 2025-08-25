@@ -1,5 +1,17 @@
 -- Kiwi Kloset database
 
+DROP TABLE IF EXISTS `check`;
+DROP TABLE IF EXISTS `repair`;
+DROP TABLE IF EXISTS booking_items;
+DROP TABLE IF EXISTS booking_information;
+DROP TABLE IF EXISTS availability;
+DROP TABLE IF EXISTS costumes;
+DROP TABLE IF EXISTS category;
+DROP TABLE IF EXISTS staff;
+DROP TABLE IF EXISTS branch;
+DROP TABLE IF EXISTS customers;
+
+
 CREATE TABLE IF NOT EXISTS customers (
     customer_id INT PRIMARY KEY AUTO_INCREMENT,
     fname VARCHAR(50) NOT NULL,
@@ -37,7 +49,7 @@ CREATE TABLE IF NOT EXISTS branch (
     branch_id INT PRIMARY KEY AUTO_INCREMENT,
     branch_name VARCHAR(100) NOT NULL,
     `location` VARCHAR(100) NOT NULL,
-    manager_id INT NOT NULL
+    manager_id INT NULL
 );
 
 CREATE TABLE IF NOT EXISTS availability (
