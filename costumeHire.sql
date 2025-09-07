@@ -73,12 +73,9 @@ CREATE TABLE IF NOT EXISTS booking_information (
 );
 
 CREATE TABLE IF NOT EXISTS booking_items (
-    booking_item_id INT PRIMARY KEY AUTO_INCREMENT,
-    booking_id INT NOT NULL,
+    booking_id INT PRIMARY KEY,
     costume_id INT NOT NULL,
     quantity INT NOT NULL,
-    hire_start_date DATE NOT NULL,
-    hire_end_date DATE NOT NULL,
     FOREIGN KEY (booking_id) REFERENCES booking_information(booking_id) ON DELETE CASCADE,
     FOREIGN KEY (costume_id) REFERENCES costumes(costume_id) ON DELETE CASCADE
 );
