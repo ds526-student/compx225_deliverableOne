@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS staff (
     lname VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     phone VARCHAR(20) NOT NULL,
-    `position` VARCHAR(50) NOT NULL,
+    `position` ENUM('manager', 'assistant') NOT NULL,
     branch_id INT NOT NULL
 );
 
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS booking_information (
 CREATE TABLE IF NOT EXISTS booking_items (
     booking_id INT PRIMARY KEY,
     costume_id INT NOT NULL,
-    quantity INT NOT NULL,
+    quantity INT NOT NULL CHECK (quantity <= (SELECT quantity_available FROM availability WHERE branch_id = (SELECT branch_id FROM booking_information WHERE booking_id = booking_items.booking_id) AND costume_id = booking_items.costume_id)),
     FOREIGN KEY (booking_id) REFERENCES booking_information(booking_id) ON DELETE CASCADE,
     FOREIGN KEY (costume_id) REFERENCES costumes(costume_id) ON DELETE CASCADE
 );
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `repair` (
     repair_id INT PRIMARY KEY AUTO_INCREMENT,
     costume_id INT NOT NULL,
     staff_id INT NOT NULL,
-    repair_date DATE NOT NULL,
+    repair_date DATE NOT NULL CHECK (repair_date >= CURRENT_DATE),
     description TEXT NOT NULL,
     FOREIGN KEY (costume_id) REFERENCES costumes(costume_id) ON DELETE CASCADE,
     FOREIGN KEY (staff_id) REFERENCES staff(staff_id) ON DELETE CASCADE
@@ -94,8 +94,8 @@ CREATE TABLE IF NOT EXISTS `check` (
     check_id INT PRIMARY KEY AUTO_INCREMENT,
     costume_id INT NOT NULL,
     staff_id INT NOT NULL,
-    check_date DATE NOT NULL,
-    condition_status VARCHAR(20) NOT NULL,
+    check_date DATE NOT NULL CHECK (check_date <= CURRENT_DATE),
+    condition_status ENUM('good', 'damaged', 'needs cleaning') NOT NULL,
     FOREIGN KEY (costume_id) REFERENCES costumes(costume_id) ON DELETE CASCADE,
     FOREIGN KEY (staff_id) REFERENCES staff(staff_id) ON DELETE CASCADE
 );
